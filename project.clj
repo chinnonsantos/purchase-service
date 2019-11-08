@@ -8,7 +8,7 @@
                  [clj-http "3.10.0"] ;; HTTP client
                  ]
   :plugins [[lein-ring "0.12.5"]]
-  :ring {:handler purchase-service.handler/app}
+  :ring {:service purchase-service.service/app}
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                         [ring/ring-mock "0.3.2"]

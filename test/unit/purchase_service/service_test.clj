@@ -1,9 +1,9 @@
-(ns purchase-service.handler-test
+(ns purchase-service.service-test
   (:require [midje.sweet :refer [facts
                                  fact
                                  =>]]
             [ring.mock.request :as mock]
-            [purchase-service.handler :refer [app]]))
+            [purchase-service.service :refer [app]]))
 
 (facts "Hitting main route, check microservice health" :unit ;; filter label
 

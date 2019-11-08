@@ -1,4 +1,4 @@
-(ns purchase-service.handler
+(ns purchase-service.service
   (:require [compojure.core :refer [defroutes
                                     GET]]
             [compojure.route :as route]

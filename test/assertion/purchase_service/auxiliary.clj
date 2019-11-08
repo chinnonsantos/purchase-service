@@ -1,5 +1,5 @@
 (ns purchase-service.auxiliary
-  (:require [purchase-service.handler :refer [app]]
+  (:require [purchase-service.service :refer [app]]
             [ring.adapter.jetty :refer [run-jetty]]
             [clj-http.client :as http]))
 
