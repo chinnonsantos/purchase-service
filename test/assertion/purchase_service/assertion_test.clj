@@ -16,4 +16,10 @@ checking responses and stopping server" :assertion ;; filter label
                             (after :facts (stop-server!))] ;; `teardown`
 
                            (fact "Initial balance is 0"
-                                 (response "/balance") => "0")))
+                                 (response "/balance/") => "0")
+
+                           (fact "Initial purchases list is []"
+                                 (response "/purchase/") => "[]")
+
+                           (fact "Initial purchase info is []"
+                                 (response "/purchase/:purchase-id/") => "[]")))
