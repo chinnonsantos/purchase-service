@@ -17,4 +17,6 @@
                         ]
          :plugins [[lein-midje "3.2.1"]
                    [lein-cloverage "1.1.2"] ;; Test coverage
-                   ]}})
+                   ]}}
+  :test-paths ["test/unit"
+               "test/assertion"])

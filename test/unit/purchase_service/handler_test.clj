@@ -27,6 +27,16 @@
              (let [response (app (mock/request :get "/"))]
                (:body response) => "Alive!")))
 
+(facts "Hitting balance route, check value"
+
+       (fact "status response is 200"
+             (let [response (app (mock/request :get "/balance"))]
+               (:status response) => 200))
+
+       (fact "body response is 0"
+             (let [response (app (mock/request :get "/balance"))]
+               (:body response) => "0")))
+
 (facts "Hitting invalid route, check routes not found"
 
        (fact "status response is 404"

@@ -39,6 +39,14 @@ To test the project in development stage, run:
 
 > Automatically reloading the test with each change
 
+To test only **Unit tests** of the project, run:
+
+    lein midje :filter unit
+
+To test only **Assertion tests** of the project, run:
+
+    lein midje :filter assertion
+
 To check test coverage, run:
 
     lein cloverage --runner :midje
