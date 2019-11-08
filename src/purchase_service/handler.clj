@@ -7,7 +7,7 @@
 
 (defroutes app-routes
   (GET "/" [] "Alive!")
-  ; (GET "/balance" [] "0")
+  (GET "/balance" [] "0")
   (route/not-found "Not Found"))
 
 (def app

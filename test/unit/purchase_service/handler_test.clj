@@ -2,22 +2,10 @@
   (:require [midje.sweet :refer [facts
                                  fact
                                  =>]]
-            ; [clojure.test :refer :all]
             [ring.mock.request :as mock]
-            [customer-service.handler :refer [app]]))
+            [purchase-service.handler :refer [app]]))
 
-; (deftest test-app
-;   (testing "main route"
-;     (let [response (app (mock/request :get "/"))]
-;       (is (= (:status response) 200))
-;       (is (= (:body response) "Alive!"))))
-
-;   (testing "not-found route"
-;     (let [response (app (mock/request :get "/invalid"))]
-;       (is (= (:status response) 404))
-;       (is (= (:body response) "Not Found")))))
-
-(facts "Hitting main route, check microservice health"
+(facts "Hitting main route, check microservice health" :unit ;; filter label
 
        (fact "status response is 200"
              (let [response (app (mock/request :get "/"))]
@@ -27,7 +15,7 @@
              (let [response (app (mock/request :get "/"))]
                (:body response) => "Alive!")))
 
-(facts "Hitting balance route, check value"
+(facts "Hitting balance route, check value" :unit ;; filter label
 
        (fact "status response is 200"
              (let [response (app (mock/request :get "/balance"))]
@@ -37,7 +25,7 @@
              (let [response (app (mock/request :get "/balance"))]
                (:body response) => "0")))
 
-(facts "Hitting invalid route, check routes not found"
+(facts "Hitting invalid route, check routes not found" :unit ;; filter label
 
        (fact "status response is 404"
              (let [response (app (mock/request :get "/invalid"))]
