@@ -3,7 +3,7 @@
             [ring.adapter.jetty :refer [run-jetty]]
             [clj-http.client :as http]))
 
-(def port 9003)
+(def port 9002)
 
 (def server (atom nil))
 
