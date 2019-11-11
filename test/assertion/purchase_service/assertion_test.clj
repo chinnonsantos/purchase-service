@@ -7,7 +7,8 @@
                                  after]]
             [purchase-service.auxiliary :refer [start-server!
                                                 stop-server!
-                                                response]]))
+                                                response]]
+            [cheshire.core :as json]))
 
 (facts "Starting server, hitting some endpoints,
 checking responses and stopping server" :assertion ;; filter label
@@ -16,10 +17,13 @@ checking responses and stopping server" :assertion ;; filter label
                             (after :facts (stop-server!))] ;; `teardown`
 
                            (fact "Initial balance is 0"
-                                 (response "/balance/") => "0")
+                                 (json/parse-string (response "/balance/") true)
+                                 => {:balance 0})
 
                            (fact "Initial purchases list is []"
-                                 (response "/purchase/") => "[]")
+                                 (json/parse-string (response "/purchase/") true)
+                                 => {:list []})
 
                            (fact "Initial purchase info is []"
-                                 (response "/purchase/:purchase-id/") => "[]")))
+                                 (json/parse-string (response "/purchase/:purchase-id/") true)
+                                 => {:purchase []})))

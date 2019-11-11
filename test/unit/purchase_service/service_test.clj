@@ -1,56 +1,93 @@
 (ns purchase-service.service-test
   (:require [midje.sweet :refer [facts
                                  fact
-                                 =>]]
+                                 =>
+                                 against-background]]
             [ring.mock.request :as mock]
-            [purchase-service.service :refer [app]]))
+            [purchase-service.service :refer [app]]
+            [cheshire.core :as json]))
 
 (facts "Hitting main route, check microservice health" :unit ;; filter label
 
-       (fact "status response is 200"
-             (let [response (app (mock/request :get "/"))]
-               (:status response) => 200))
+       (against-background (json/generate-string {:message "Alive!"})
+                           => "{\"message\":\"Alive!\"}") ;; mock Cheshire
 
-       (fact "body response is 'Alive!'"
-             (let [response (app (mock/request :get "/"))]
-               (:body response) => "Alive!")))
+       (let [response (app (mock/request :get "/"))] ;; mock Ring
 
-(facts "Hitting balance route, check value" :unit ;; filter label
+         (fact "the header content-type is 'application/json'"
+               (get-in response [:headers "Content-Type"])
+               => "application/json; charset=utf-8")
 
-       (fact "status response is 200"
-             (let [response (app (mock/request :get "/balance/"))]
-               (:status response) => 200))
+         (fact "status response is 200"
+               (:status response) => 200)
 
-       (fact "body response is 0"
-             (let [response (app (mock/request :get "/balance/"))]
-               (:body response) => "0")))
+         (fact "body response is a JSON, being key is :message and value is 'Alive!'"
+               (:body response) => "{\"message\":\"Alive!\"}")))
 
-(facts "Hitting purchases list route, check value" :unit ;; filter label
+(facts "Hitting balance route, check value" :unit
 
-       (fact "status response is 200"
-             (let [response (app (mock/request :get "/purchase/"))]
-               (:status response) => 200))
+       (against-background (json/generate-string {:balance 0})
+                           => "{\"balance\":0}")
 
-       (fact "body response is []"
-             (let [response (app (mock/request :get "/purchase/"))]
-               (:body response) => "[]")))
+       (let [response (app (mock/request :get "/balance/"))]
 
-(facts "Hitting purchase info route, check value" :unit ;; filter label
+         (fact "the header content-type is 'application/json'"
+               (get-in response [:headers "Content-Type"])
+               => "application/json; charset=utf-8")
 
-       (fact "status response is 200"
-             (let [response (app (mock/request :get "/purchase/:purchase-id/"))]
-               (:status response) => 200))
+         (fact "status response is 200"
+               (:status response) => 200)
 
-       (fact "body response is []"
-             (let [response (app (mock/request :get "/purchase/:purchase-id/"))]
-               (:body response) => "[]")))
+         (fact "body response is a JSON, being key is :balance and value is 0"
+               (:body response) => "{\"balance\":0}")))
 
-(facts "Hitting invalid route, check routes not found" :unit ;; filter label
+(facts "Hitting purchases list route, check value" :unit
 
-       (fact "status response is 404"
-             (let [response (app (mock/request :get "/invalid/"))]
-               (:status response) => 404))
+       (against-background (json/generate-string {:list []})
+                           => "{\"list\":[]}")
 
-       (fact "body response is 'Not Found'"
-             (let [response (app (mock/request :get "/invalid/"))]
-               (:body response) => "Not Found")))
+       (let [response (app (mock/request :get "/purchase/"))]
+
+         (fact "the header content-type is 'application/json'"
+               (get-in response [:headers "Content-Type"])
+               => "application/json; charset=utf-8")
+
+         (fact "status response is 200"
+               (:status response) => 200)
+
+         (fact "body response is a JSON, being key is :list and value is []"
+               (:body response) => "{\"list\":[]}")))
+
+(facts "Hitting purchase info route, check value" :unit
+
+       (against-background (json/generate-string {:purchase []})
+                           => "{\"purchase\":[]}")
+
+       (let [response (app (mock/request :get "/purchase/:purchase-id/"))]
+
+         (fact "the header content-type is 'application/json'"
+               (get-in response [:headers "Content-Type"])
+               => "application/json; charset=utf-8")
+
+         (fact "status response is 200"
+               (:status response) => 200)
+
+         (fact "body response is a JSON, being key is :purchase and value is []"
+               (:body response) => "{\"purchase\":[]}")))
+
+(facts "Hitting invalid route, check routes not found" :unit
+
+       (against-background (json/generate-string {:message "Not Found"})
+                           => "{\"message\":\"Not Found\"}")
+
+       (let [response (app (mock/request :get "/invalid/"))]
+
+         (fact "the header content-type is 'application/json'"
+               (get-in response [:headers "Content-Type"])
+               => "application/json; charset=utf-8")
+
+         (fact "status response is 404"
+               (:status response) => 404)
+
+         (fact "body response is a JSON, being key is :message and value is 'Not Found'"
+               (:body response) => "{\"message\":\"Not Found\"}")))
