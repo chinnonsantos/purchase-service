@@ -1,0 +1,8 @@
+language: clojure
+lein: 2.9.1
+script: "lein midje"
+branches:
+  only:
+    - master
+jdk:
+  - openjdk11
