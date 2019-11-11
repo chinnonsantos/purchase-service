@@ -1,10 +1,14 @@
 # PURCHASE MICROSERVICES DEMO
 
+## Build status
+
+[![Build Status](https://travis-ci.org/chinnonsantos/purchase-service.svg?branch=master)](https://travis-ci.org/chinnonsantos/purchase-service)
+
 This project deals with a purchase microservice created from the leiningen '[compojure][]' template.
 
 ## Prerequisites
 
-You will need [Leiningen][] 2.0.0 or above installed.
+You will need [Leiningen][] 2.9.1 or above installed.
 
 **Libraries:**
 
