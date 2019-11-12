@@ -12,7 +12,12 @@ You will need [Leiningen][] 2.9.1 or above installed.
 
 **Libraries:**
 
-- [Midje][] 1.9.9 (:dev)
+- [midje][] 1.9.9 (:dev)
+- [ring/ring-core][] 1.7.1(:dev)
+- [ring/ring-jetty-adapter][] 1.7.1 (:dev)
+- [clj-http][] 3.10.0
+- [cheshire][] 5.9.0
+- [ring-json][] 0.5.0
 
 **Plugins:**
 
@@ -22,6 +27,11 @@ You will need [Leiningen][] 2.9.1 or above installed.
 [compojure]: https://github.com/weavejester/compojure
 [leiningen]: https://github.com/technomancy/leiningen
 [midje]: https://clojars.org/midje
+[ring/ring-core]: https://clojars.org/ring/ring-core
+[ring/ring-jetty-adapter]: https://clojars.org/ring/ring-jetty-adapter
+[clj-http]: https://clojars.org/clj-http
+[cheshire]: https://clojars.org/cheshire
+[ring-json]: https://clojars.org/ring/ring-json
 [lein-midje]: https://clojars.org/lein-midje
 [lein-cloverage]: https://clojars.org/lein-cloverage
 
