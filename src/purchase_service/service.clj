@@ -3,7 +3,7 @@
                                     GET]]
             [compojure.route :as route]
             [ring.middleware.defaults :refer [wrap-defaults
-                                              site-defaults]]
+                                              api-defaults]]
             [cheshire.core :as json]))
 
 (defn header-json [data-map]
@@ -23,4 +23,4 @@
   (route/not-found (header-json {:message "Not Found"})))
 
 (def app
-  (wrap-defaults app-routes site-defaults))
+  (wrap-defaults app-routes api-defaults))
