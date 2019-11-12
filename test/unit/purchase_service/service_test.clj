@@ -24,12 +24,12 @@
          (fact "body response is a JSON, being key is :message and value is 'Alive!'"
                (:body response) => "{\"message\":\"Alive!\"}")))
 
-(facts "Hitting balance route, check value" :unit
+(facts "Hitting balance route, by account id, check value" :unit
 
        (against-background (json/generate-string {:balance 0})
                            => "{\"balance\":0}")
 
-       (let [response (app (mock/request :get "/balance/"))]
+       (let [response (app (mock/request :get "/balance/:account-id/"))]
 
          (fact "the header content-type is 'application/json'"
                (get-in response [:headers "Content-Type"])
@@ -41,12 +41,12 @@
          (fact "body response is a JSON, being key is :balance and value is 0"
                (:body response) => "{\"balance\":0}")))
 
-(facts "Hitting purchases list route, check value" :unit
+(facts "Hitting purchases list route, by account id, check value" :unit
 
        (against-background (json/generate-string {:list []})
                            => "{\"list\":[]}")
 
-       (let [response (app (mock/request :get "/purchase/"))]
+       (let [response (app (mock/request :get "/purchase/from-account/:account-id/"))]
 
          (fact "the header content-type is 'application/json'"
                (get-in response [:headers "Content-Type"])

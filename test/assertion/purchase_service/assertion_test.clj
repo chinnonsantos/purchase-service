@@ -17,11 +17,11 @@ checking responses and stopping server" :assertion ;; filter label
                             (after :facts (stop-server!))] ;; `teardown`
 
                            (fact "Initial balance is 0"
-                                 (json/parse-string (response "/balance/") true)
+                                 (json/parse-string (response "/balance/:account-id/") true)
                                  => {:balance 0})
 
                            (fact "Initial purchases list is []"
-                                 (json/parse-string (response "/purchase/") true)
+                                 (json/parse-string (response "/purchase/from-account/:account-id/") true)
                                  => {:list []})
 
                            (fact "Initial purchase info is []"

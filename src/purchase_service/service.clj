@@ -14,9 +14,9 @@
 (defroutes app-routes
   (GET "/" []
     (header-json {:message "Alive!"}))
-  (GET "/balance/" []
+  (GET "/balance/:account-id/" []
     (header-json {:balance 0}))
-  (GET "/purchase/" []
+  (GET "/purchase/from-account/:account-id/" []
     (header-json {:list []}))
   (GET "/purchase/:purchase-id/" []
     (header-json {:purchase []}))
