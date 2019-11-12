@@ -19,13 +19,13 @@
   (GET "/" []
     (header-json {:message "Alive!"}))
   (GET "/balance/:account-id/" []
-    (header-json {:balance 0}))
+    (header-json {:balance (db/balance!)}))
   (GET "/purchase/from-account/:account-id/" []
     (header-json {:list []}))
   (GET "/purchase/:purchase-id/" []
     (header-json {:purchase {}}))
   (POST "/purchase/" request
-    (-> (db/record (:body request))
+    (-> (db/register! (:body request))
         (header-json 201)))
   (route/not-found (header-json {:message "Not Found"})))
 

@@ -5,13 +5,16 @@
                                  against-background
                                  before
                                  after]]
+            [purchase-service.db.saving-purchase :refer [reset-records!]]
             [purchase-service.auxiliary :refer [start-server!
                                                 stop-server!
                                                 response
                                                 endpoint
-                                                test-account-id
-                                                test-purchase-id
-                                                test-income-st]]
+                                                account-id-st
+                                                purchase-id-st
+                                                income-st
+                                                expense-st
+                                                expense-nd]]
             [cheshire.core :as json]
             [clj-http.client :as http]))
 
@@ -19,26 +22,44 @@
 checking responses and stopping server" :assertion ;; filter label
 
        (against-background
-        [(before :facts (start-server!)) ;; `setup`
+        [(before :facts [(reset-records!) (start-server!)]) ;; `setup`
          (after :facts (stop-server!))] ;; `teardown`
 
-        (fact "Initial balance is 0"
-              (json/parse-string (response (str "/balance/" test-account-id "/")) true)
+        (fact "initial balance is 0"
+              (json/parse-string (response (str "/balance/" account-id-st "/")) true)
               => {:balance 0})
 
-        (fact "Initial purchases list is []"
-              (json/parse-string (response (str "/purchase/from-account/" test-account-id "/")) true)
+        (fact "initial purchases list is []"
+              (json/parse-string (response (str "/purchase/from-account/" account-id-st "/")) true)
               => {:list []})
 
-        (fact "Initial purchase info is {}"
-              (json/parse-string (response (str "/purchase/" test-purchase-id "/")) true)
+        (fact "initial purchase info is {}"
+              (json/parse-string (response (str "/purchase/" purchase-id-st "/")) true)
               => {:purchase {}})
 
-        (fact "Balance is 520.50 when a only purchase is income type with the same value"
+        (fact "balance is 520.50 when there is a only income transaction, in the value of 520.50"
 
               (http/post (endpoint "/purchase/")
                          {:content-type :json
-                          :body (json/generate-string test-income-st)})
+                          :body (json/generate-string income-st)})
 
-              (json/parse-string (response (str "/balance/" test-account-id "/")) true)
-              => {:balance 520.50})))
+              (json/parse-string (response (str "/balance/" account-id-st "/")) true)
+              => {:balance 520.50})
+
+        (fact "balance is -64.39 when we creating an income transaction with value of 520.50 and
+an expense transaction with value of 124.90 and other expense transaction with value of 459.99"
+
+              (http/post (endpoint "/purchase/")
+                         {:content-type :json
+                          :body (json/generate-string income-st)})
+
+              (http/post (endpoint "/purchase/")
+                         {:content-type :json
+                          :body (json/generate-string expense-st)})
+
+              (http/post (endpoint "/purchase/")
+                         {:content-type :json
+                          :body (json/generate-string expense-nd)})
+
+              (json/parse-string (response (str "/balance/" account-id-st "/")) true)
+              => {:balance -64.39})))

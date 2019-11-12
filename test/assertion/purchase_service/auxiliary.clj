@@ -26,13 +26,16 @@
 (defn response [route]
   (:body (request-http route)))
 
-(def test-account-id (UUID/randomUUID))
+(def account-id-st (UUID/randomUUID))
 
-(def test-purchase-id (UUID/randomUUID))
+(def purchase-id-st (UUID/randomUUID)) ; first id
 
-(def test-income-st
-  {:purchase-id test-purchase-id
-   :account-id test-account-id
+(def purchase-id-nd (UUID/randomUUID)) ; second id
+
+(def purchase-id-rd (UUID/randomUUID)) ; third id
+
+(def income-st
+  {:account-id account-id-st
    :type "income"
    :value 520.50
    :date "2019-11-11T23:15:22Z"
@@ -41,15 +44,14 @@
    :tag ["bill"
          "prepayment"]})
 
-(def test-income-st-json
-(str "{\"purchase-id\":\"" test-purchase-id "\",\"account-id\":\""
-     test-account-id "\",\"type\":\"income\",\"value\":520.5,"
-     "\"date\":\"2019-11-11T23:15:22Z\",\"origin\":{\"code\":0,"
-     "\"name\":\"bill payment\"},\"tag\":[\"bill\",\"prepayment\"]}"))
+(def income-st-json
+  (str "{\"account-id\":\"" account-id-st "\",\"type\":\"income\","
+       "\"value\":520.5,\"date\":\"2019-11-11T23:15:22Z\",\"origin\":"
+       "{\"code\":0,\"name\":\"bill payment\"},\"tag\":"
+       "[\"bill\",\"prepayment\"]}"))
 
-(def test-expense-st
-  {:purchase-id (UUID/randomUUID)
-   :account-id test-account-id
+(def expense-st
+  {:account-id account-id-st
    :type "expense"
    :value 124.90
    :date "2019-11-03T21:36:27Z"
@@ -57,9 +59,8 @@
             :name "shopping online"}
    :tag ["footwear"]})
 
-(def test-expense-nd
-  {:purchase-id (UUID/randomUUID)
-   :account-id test-account-id
+(def expense-nd
+  {:account-id account-id-st
    :type "expense"
    :value 459.99
    :date "2019-11-05T14:45:01Z"

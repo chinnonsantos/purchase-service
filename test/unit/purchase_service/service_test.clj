@@ -4,8 +4,8 @@
                                  =>
                                  against-background]]
             [purchase-service.db.saving-purchase :as db]
-            [purchase-service.auxiliary :refer [test-income-st
-                                                test-income-st-json]]
+            [purchase-service.auxiliary :refer [income-st
+                                                income-st-json]]
             [ring.mock.request :as mock]
             [purchase-service.service :refer [app]]
             [cheshire.core :as json]))
@@ -29,8 +29,9 @@
 
 (facts "Hitting balance route, by account id, check value" :unit
 
-       (against-background (json/generate-string {:balance 0})
-                           => "{\"balance\":0}")
+       (against-background [(json/generate-string {:balance 0})
+                            => "{\"balance\":0}"
+                            (db/balance!) => 0])
 
        (let [response (app (mock/request :get "/balance/:account-id/"))]
 
@@ -78,13 +79,13 @@
          (fact "body response is a JSON, being key is :purchase and value is {}"
                (:body response) => "{\"purchase\":{}}")))
 
-(facts "Hitting purchase record route, with test income data, check value" :unit
+(facts "Hitting purchase register route, with test income data, check value" :unit
 
-       (against-background (db/record test-income-st-json)
-                           => test-income-st)
+       (against-background (db/register! income-st-json)
+                           => income-st)
 
        (let [response (app (-> (mock/request :post "/purchase/")
-                          (mock/json-body test-income-st-json)))]
+                          (mock/json-body income-st-json)))]
 
          (fact "the header content-type is 'application/json'"
                (get-in response [:headers "Content-Type"])
@@ -94,7 +95,7 @@
                (:status response) => 201)
 
          (fact "body response is a JSON, with the same content that was submitted")
-               (:body response) => test-income-st-json))
+               (:body response) => income-st-json))
 
 (facts "Hitting invalid route, check routes not found" :unit
 
