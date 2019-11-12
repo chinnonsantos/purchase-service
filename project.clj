@@ -7,6 +7,7 @@
                  [ring/ring-defaults "0.3.2"] ;; HTTP server
                  [clj-http "3.10.0"] ;; HTTP client
                  [cheshire "5.9.0"] ;; JSON encoding
+                 [ring/ring-json "0.5.0"] ;; Wrappers for JSON
                  ]
   :plugins [[lein-ring "0.12.5"]]
   :ring {:handler purchase-service.service/app}

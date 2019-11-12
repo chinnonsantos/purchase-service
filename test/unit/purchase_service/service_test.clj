@@ -3,6 +3,9 @@
                                  fact
                                  =>
                                  against-background]]
+            [purchase-service.db.saving-purchase :as db]
+            [purchase-service.auxiliary :refer [test-income-st
+                                                test-income-st-json]]
             [ring.mock.request :as mock]
             [purchase-service.service :refer [app]]
             [cheshire.core :as json]))
@@ -60,8 +63,8 @@
 
 (facts "Hitting purchase info route, check value" :unit
 
-       (against-background (json/generate-string {:purchase []})
-                           => "{\"purchase\":[]}")
+       (against-background (json/generate-string {:purchase {}})
+                           => "{\"purchase\":{}}")
 
        (let [response (app (mock/request :get "/purchase/:purchase-id/"))]
 
@@ -72,8 +75,26 @@
          (fact "status response is 200"
                (:status response) => 200)
 
-         (fact "body response is a JSON, being key is :purchase and value is []"
-               (:body response) => "{\"purchase\":[]}")))
+         (fact "body response is a JSON, being key is :purchase and value is {}"
+               (:body response) => "{\"purchase\":{}}")))
+
+(facts "Hitting purchase record route, with test income data, check value" :unit
+
+       (against-background (db/record test-income-st-json)
+                           => test-income-st)
+
+       (let [response (app (-> (mock/request :post "/purchase/")
+                          (mock/json-body test-income-st-json)))]
+
+         (fact "the header content-type is 'application/json'"
+               (get-in response [:headers "Content-Type"])
+               => "application/json; charset=utf-8")
+
+         (fact "status response is 201"
+               (:status response) => 201)
+
+         (fact "body response is a JSON, with the same content that was submitted")
+               (:body response) => test-income-st-json))
 
 (facts "Hitting invalid route, check routes not found" :unit
 
