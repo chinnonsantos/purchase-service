@@ -1,7 +1,8 @@
 (ns purchase-service.auxiliary
   (:require [purchase-service.service :refer [app]]
             [ring.adapter.jetty :refer [run-jetty]]
-            [clj-http.client :as http])
+            [clj-http.client :as http]
+            [cheshire.core :as json])
   (:import [java.util UUID]))
 
 (def port 9002)
@@ -25,6 +26,11 @@
 
 (defn response [route]
   (:body (request-http route)))
+
+(defn content-like-json [transaction]
+  {:content-type :json
+   :body (json/generate-string transaction)
+   :throw-exceptions false})
 
 (def account-id-st (UUID/randomUUID))
 

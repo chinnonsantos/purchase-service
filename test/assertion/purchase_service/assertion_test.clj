@@ -14,7 +14,8 @@
                                                 purchase-id-st
                                                 income-st
                                                 expense-st
-                                                expense-nd]]
+                                                expense-nd
+                                                content-like-json]]
             [cheshire.core :as json]
             [clj-http.client :as http]))
 
@@ -40,8 +41,7 @@ checking responses and stopping server" :assertion ;; filter label
         (fact "balance is 520.50 when there is a only income transaction, in the value of 520.50"
 
               (http/post (endpoint "/purchase/")
-                         {:content-type :json
-                          :body (json/generate-string income-st)})
+                         (content-like-json income-st))
 
               (json/parse-string (response (str "/balance/" account-id-st "/")) true)
               => {:balance 520.50})
@@ -50,16 +50,13 @@ checking responses and stopping server" :assertion ;; filter label
 an expense transaction with value of 124.90 and other expense transaction with value of 459.99"
 
               (http/post (endpoint "/purchase/")
-                         {:content-type :json
-                          :body (json/generate-string income-st)})
+                         (content-like-json income-st))
 
               (http/post (endpoint "/purchase/")
-                         {:content-type :json
-                          :body (json/generate-string expense-st)})
+                         (content-like-json expense-st))
 
               (http/post (endpoint "/purchase/")
-                         {:content-type :json
-                          :body (json/generate-string expense-nd)})
+                         (content-like-json expense-nd))
 
               (json/parse-string (response (str "/balance/" account-id-st "/")) true)
               => {:balance -64.39})))
