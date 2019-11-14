@@ -4,13 +4,12 @@
                                  =>
                                  against-background]]
             [purchase-service.db.saving-purchase :as db]
-            [purchase-service.auxiliary :refer [income-st
-                                                income-st-json]]
+            [purchase-service.components.transactions :as trans]
             [ring.mock.request :as mock]
             [purchase-service.service :refer [app]]
             [cheshire.core :as json]))
 
-(facts "Hitting main route, check microservice health" :unit ;; filter label
+(facts "Hitting main route, checking microservice health" :unit ;; filter label
 
        (against-background (json/generate-string {:message "Alive!"})
                            => "{\"message\":\"Alive!\"}") ;; mock Cheshire
@@ -27,7 +26,7 @@
          (fact "body response is a JSON, being key is :message and value is 'Alive!'"
                (:body response) => "{\"message\":\"Alive!\"}")))
 
-(facts "Hitting balance route, by account id, check value" :unit
+(facts "Hitting balance route, by account id, checking value" :unit
 
        (against-background [(json/generate-string {:balance 0})
                             => "{\"balance\":0}"
@@ -45,7 +44,7 @@
          (fact "body response is a JSON, being key is :balance and value is 0"
                (:body response) => "{\"balance\":0}")))
 
-(facts "Hitting purchases list route, by account id, check value" :unit
+(facts "Hitting purchases list route, by account id, checking value" :unit
 
        (against-background (json/generate-string {:list []})
                            => "{\"list\":[]}")
@@ -62,7 +61,7 @@
          (fact "body response is a JSON, being key is :list and value is []"
                (:body response) => "{\"list\":[]}")))
 
-(facts "Hitting purchase info route, check value" :unit
+(facts "Hitting purchase info route, checking value" :unit
 
        (against-background (json/generate-string {:purchase {}})
                            => "{\"purchase\":{}}")
@@ -79,13 +78,15 @@
          (fact "body response is a JSON, being key is :purchase and value is {}"
                (:body response) => "{\"purchase\":{}}")))
 
-(facts "Hitting purchase register route, with test income data, check value" :unit
+(facts "Hitting purchase register route, checking value" :unit
 
-       (against-background (db/register! income-st-json)
-                           => income-st)
+       (against-background [(trans/valid? {:value 100}) => true ;; Mock of `trans/valid?`
+                            (db/register! {:value 100}) => {:value 100} ;; Mock of `db/register!`
+                            ])
 
-       (let [response (app (-> (mock/request :post "/purchase/")
-                          (mock/json-body income-st-json)))]
+       (let [response (app (-> (mock/request :post "/purchase/") ;; Mock of `/purchase/` route
+                               (mock/json-body {:value 100}) ;; Creating JSON for body POST
+                               ))]
 
          (fact "the header content-type is 'application/json'"
                (get-in response [:headers "Content-Type"])
@@ -94,10 +95,10 @@
          (fact "status response is 201"
                (:status response) => 201)
 
-         (fact "body response is a JSON, with the same content that was submitted")
-               (:body response) => income-st-json))
+         (fact "body response is a JSON, with the same content that was submitted"
+               (:body response) => "{\"value\":100}")))
 
-(facts "Hitting invalid route, check routes not found" :unit
+(facts "Hitting invalid route, checking routes not found" :unit
 
        (against-background (json/generate-string {:message "Not Found"})
                            => "{\"message\":\"Not Found\"}")

@@ -32,32 +32,36 @@
    :body (json/generate-string transaction)
    :throw-exceptions false})
 
-(def account-id-st (UUID/randomUUID))
+(def account-id (UUID/randomUUID))
 
 (def purchase-id-st (UUID/randomUUID)) ; first id
 
 (def purchase-id-nd (UUID/randomUUID)) ; second id
 
-(def purchase-id-rd (UUID/randomUUID)) ; third id
-
 (def income-st
-  {:account-id account-id-st
-   :type "income"
-   :value 520.50
-   :date "2019-11-11T23:15:22Z"
+  {:account-id account-id ; required
+   :type "income" ; required ("income" or "expense")
+   :value 520.50 ; required (posive number)
+   :date "2019-11-11T23:15:22Z" ; optional
    :origin {:code 0
-            :name "bill payment"}
+            :name "bill payment"} ; required
    :tag ["bill"
-         "prepayment"]})
+         "prepayment"]} ; optional
+  )
+
+(def income-st-w-id
+  (merge income-st {:purchase-id purchase-id-st}))
 
 (def income-st-json
-  (str "{\"account-id\":\"" account-id-st "\",\"type\":\"income\","
-       "\"value\":520.5,\"date\":\"2019-11-11T23:15:22Z\",\"origin\":"
-       "{\"code\":0,\"name\":\"bill payment\"},\"tag\":"
-       "[\"bill\",\"prepayment\"]}"))
+  (json/generate-string income-st
+                        {:escape-non-ascii true}))
+
+(def income-st-json-w-id
+  (json/generate-string income-st-w-id
+                        {:escape-non-ascii true}))
 
 (def expense-st
-  {:account-id account-id-st
+  {:account-id account-id
    :type "expense"
    :value 124.90
    :date "2019-11-03T21:36:27Z"
@@ -65,8 +69,19 @@
             :name "shopping online"}
    :tag ["footwear"]})
 
+(def expense-st-w-id
+  (merge expense-st {:purchase-id purchase-id-st}))
+
+(def expense-st-json
+  (json/generate-string expense-st
+                        {:escape-non-ascii true}))
+
+(def expense-st-json-w-id
+  (json/generate-string expense-st-w-id
+                        {:escape-non-ascii true}))
+
 (def expense-nd
-  {:account-id account-id-st
+  {:account-id account-id
    :type "expense"
    :value 459.99
    :date "2019-11-05T14:45:01Z"
@@ -74,3 +89,11 @@
             :name "shopping"}
    :tag ["furniture"
          "kitchen"]})
+
+(defn rm-purchase-id-from-json
+  "Remove the purchase-id key from JSON string"
+  [json]
+  (-> (json/parse-string json true)
+      (last)
+      (dissoc :purchase-id)
+      (json/generate-string {:escape-non-ascii true})))

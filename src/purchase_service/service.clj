@@ -4,6 +4,7 @@
                                     POST]]
             [compojure.route :as route]
             [purchase-service.db.saving-purchase :as db]
+            [purchase-service.components.transactions :as trans]
             [ring.middleware.defaults :refer [wrap-defaults
                                               api-defaults]]
             [ring.middleware.json :refer [wrap-json-body]]
@@ -25,8 +26,10 @@
   (GET "/purchase/:purchase-id/" []
     (header-json {:purchase {}}))
   (POST "/purchase/" request
-    (-> (db/register! (:body request))
-        (header-json 201)))
+    (if (trans/valid? (:body request))
+      (-> (db/register! (:body request))
+          (header-json 201))
+      (header-json {:mensagem "Unprocessable Entity"} 422)))
   (route/not-found (header-json {:message "Not Found"})))
 
 (def app
