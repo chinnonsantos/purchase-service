@@ -11,7 +11,7 @@
                                                 response
                                                 endpoint
                                                 account-id
-                                                purchase-id-st
+                                                purchase-id
                                                 income-st
                                                 income-st-json
                                                 expense-st
@@ -34,11 +34,11 @@
 
         (fact "initial purchases list is []"
               (json/parse-string (response (str "/purchase/from-account/" account-id "/")) true)
-              => {:list []})
+              => [])
 
         (fact "initial purchase info is {}"
-              (json/parse-string (response (str "/purchase/" purchase-id-st "/")) true)
-              => {:purchase {}})
+              (json/parse-string (response (str "/purchase/" purchase-id "/")) true)
+              => {})
 
         (fact "check response body after register a income transaction"
 

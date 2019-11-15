@@ -22,9 +22,9 @@
   (GET "/balance/:account-id/" []
     (header-json {:balance (db/balance!)}))
   (GET "/purchase/from-account/:account-id/" []
-    (header-json {:list []}))
+    (header-json []))
   (GET "/purchase/:purchase-id/" []
-    (header-json {:purchase {}}))
+    (header-json {}))
   (POST "/purchase/" request
     (if (trans/valid? (:body request))
       (-> (db/register! (:body request))

@@ -34,9 +34,7 @@
 
 (def account-id (UUID/randomUUID))
 
-(def purchase-id-st (UUID/randomUUID)) ; first id
-
-(def purchase-id-nd (UUID/randomUUID)) ; second id
+(def purchase-id (UUID/randomUUID))
 
 (def income-st
   {:account-id account-id ; required
@@ -49,15 +47,8 @@
          "prepayment"]} ; optional
   )
 
-(def income-st-w-id
-  (merge income-st {:purchase-id purchase-id-st}))
-
 (def income-st-json
   (json/generate-string income-st
-                        {:escape-non-ascii true}))
-
-(def income-st-json-w-id
-  (json/generate-string income-st-w-id
                         {:escape-non-ascii true}))
 
 (def expense-st
@@ -69,15 +60,8 @@
             :name "shopping online"}
    :tag ["footwear"]})
 
-(def expense-st-w-id
-  (merge expense-st {:purchase-id purchase-id-st}))
-
 (def expense-st-json
   (json/generate-string expense-st
-                        {:escape-non-ascii true}))
-
-(def expense-st-json-w-id
-  (json/generate-string expense-st-w-id
                         {:escape-non-ascii true}))
 
 (def expense-nd
@@ -94,6 +78,5 @@
   "Remove the purchase-id key from JSON string"
   [json]
   (-> (json/parse-string json true)
-      (last)
       (dissoc :purchase-id)
       (json/generate-string {:escape-non-ascii true})))

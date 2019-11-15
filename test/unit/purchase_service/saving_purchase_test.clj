@@ -11,7 +11,7 @@
             [purchase-service.auxiliary :refer [income-st
                                                 expense-st
                                                 expense-nd
-                                                purchase-id-st]]))
+                                                purchase-id]]))
 
 (facts "Store a transaction in an atom" :unit
 
@@ -22,11 +22,12 @@
               (count (transactions!)) => 0)
 
         (fact "this transaction is the first record, and count of transactions is 1"
-              (first (register! income-st purchase-id-st))
-              => (merge income-st {:purchase-id purchase-id-st})
+              (register! income-st purchase-id)
+              => (merge income-st {:purchase-id purchase-id})
+
               (count (transactions!)) => 1)))
 
-(facts "calculate balance given a collection of transactions" :unit
+(facts "Calculate balance given a collection of transactions" :unit
 
        (against-background
         [(before :facts (reset-records!))]

@@ -26,7 +26,7 @@
          (fact "body response is a JSON, being key is :message and value is 'Alive!'"
                (:body response) => "{\"message\":\"Alive!\"}")))
 
-(facts "Hitting balance route, by account id, checking value" :unit
+(facts "Hitting balance route, by account id, checking response" :unit
 
        (against-background [(json/generate-string {:balance 0})
                             => "{\"balance\":0}"
@@ -44,10 +44,9 @@
          (fact "body response is a JSON, being key is :balance and value is 0"
                (:body response) => "{\"balance\":0}")))
 
-(facts "Hitting purchases list route, by account id, checking value" :unit
+(facts "Hitting purchases list route, by account id, checking response" :unit
 
-       (against-background (json/generate-string {:list []})
-                           => "{\"list\":[]}")
+       (against-background (json/generate-string []) => "[]")
 
        (let [response (app (mock/request :get "/purchase/from-account/:account-id/"))]
 
@@ -59,12 +58,11 @@
                (:status response) => 200)
 
          (fact "body response is a JSON, being key is :list and value is []"
-               (:body response) => "{\"list\":[]}")))
+               (:body response) => "[]")))
 
-(facts "Hitting purchase info route, checking value" :unit
+(facts "Hitting purchase info route, checking response" :unit
 
-       (against-background (json/generate-string {:purchase {}})
-                           => "{\"purchase\":{}}")
+       (against-background (json/generate-string {}) => "{}")
 
        (let [response (app (mock/request :get "/purchase/:purchase-id/"))]
 
@@ -76,9 +74,9 @@
                (:status response) => 200)
 
          (fact "body response is a JSON, being key is :purchase and value is {}"
-               (:body response) => "{\"purchase\":{}}")))
+               (:body response) => "{}")))
 
-(facts "Hitting purchase register route, checking value" :unit
+(facts "Hitting purchase register route, checking response" :unit
 
        (against-background [(trans/valid? {:value 100}) => true ;; Mock of `trans/valid?`
                             (db/register! {:value 100}) => {:value 100} ;; Mock of `db/register!`

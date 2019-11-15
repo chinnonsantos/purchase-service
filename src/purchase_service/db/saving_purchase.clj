@@ -13,8 +13,7 @@
   (let [purchase-id (or purchase-uuid (java.util.UUID/randomUUID))]
     (->> (merge transaction {:purchase-id purchase-id})
          (swap! records conj)
-         (last)
-         (vector))))
+         (last))))
 
 (defn- expense? [transaction]
   (= (:type transaction) "expense"))
