@@ -2,7 +2,6 @@
   "account-id": "8b84c28c-8947-4e67-87d8-68f65ebca105",
   "type": "expense",
   "value": 124.90,
-  "date": "2019-11-03T21:36:27Z",
   "origin": {
     "code": 2,
     "name": "shopping online"

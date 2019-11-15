@@ -22,8 +22,10 @@
               (count (transactions!)) => 0)
 
         (fact "this transaction is the first record, and count of transactions is 1"
-              (register! income-st purchase-id)
-              => (merge income-st {:purchase-id purchase-id})
+              (let [date (java.util.Date. 1573139257804)]
+                (register! income-st purchase-id date)
+                => (merge income-st {:purchase-id purchase-id
+                                     :date date}))
 
               (count (transactions!)) => 1)))
 

@@ -18,7 +18,7 @@
                                                 expense-st-json
                                                 expense-nd
                                                 content-like-json
-                                                rm-purchase-id-from-json]]
+                                                rm-id-date-from-json]]
             [cheshire.core :as json]
             [clj-http.client :as http]))
 
@@ -44,13 +44,13 @@
 
               (let [response (http/post (endpoint "/purchase/")
                                         (content-like-json income-st))]
-                (rm-purchase-id-from-json (:body response)) => income-st-json))
+                (rm-id-date-from-json (:body response)) => income-st-json))
 
         (fact "check response body after register a expense transaction"
 
               (let [response (http/post (endpoint "/purchase/")
                                         (content-like-json expense-st))]
-                (rm-purchase-id-from-json (:body response)) => expense-st-json))
+                (rm-id-date-from-json (:body response)) => expense-st-json))
 
         (fact "balance is 520.50 when there is a only income transaction with value of 520.50"
 
