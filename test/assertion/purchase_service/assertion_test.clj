@@ -18,9 +18,11 @@
                                                 expense-st-json
                                                 expense-nd
                                                 content-like-json
+                                                rm-id-date
                                                 rm-id-date-from-json]]
             [cheshire.core :as json]
-            [clj-http.client :as http]))
+            [clj-http.client :as http])
+  (:import [java.util UUID]))
 
 (facts "Starting server, hitting some endpoints, checking responses and stopping server" :assertion ;; filter label
 
@@ -32,11 +34,11 @@
               (json/parse-string (response (str "/balance/" account-id "/")) true)
               => {:balance 0})
 
-        (fact "initial purchases list is []"
+        (fact "initial purchases list is a empty list"
               (json/parse-string (response (str "/purchase/from-account/" account-id "/")) true)
-              => [])
+              => '())
 
-        (fact "initial purchase info is {}"
+        (fact "initial purchase info is a empty object"
               (json/parse-string (response (str "/purchase/" purchase-id "/")) true)
               => {})
 
@@ -80,7 +82,62 @@
                          (content-like-json expense-nd))
 
               (json/parse-string (response (str "/balance/" account-id "/")) true)
-              => {:balance -64.39})))
+              => {:balance -64.39})
+
+        (fact "purchase list count check when registering only one purchase, should list only one"
+
+              (http/post (endpoint "/purchase/")
+                         (content-like-json income-st))
+
+              (map rm-id-date (json/parse-string (response (str "/purchase/from-account/" account-id "/")) true))
+              => (list income-st))
+
+        (fact "purchase list count check when registering two purchase, should list only two"
+
+              (http/post (endpoint "/purchase/")
+                         (content-like-json income-st))
+
+              (http/post (endpoint "/purchase/")
+                         (content-like-json expense-st))
+
+              (map rm-id-date (json/parse-string (response (str "/purchase/from-account/" account-id "/")) true))
+              => (list income-st expense-st))
+
+        (fact "purchase list count check when registering three purchase, should list only three"
+
+              (http/post (endpoint "/purchase/")
+                         (content-like-json income-st))
+
+              (http/post (endpoint "/purchase/")
+                         (content-like-json expense-st))
+
+              (http/post (endpoint "/purchase/")
+                         (content-like-json expense-nd))
+
+              (map rm-id-date (json/parse-string (response (str "/purchase/from-account/" account-id "/")) true))
+              => (list income-st expense-st expense-nd))
+
+        (fact "purchase list count check when registering two purchase from the same account id and one from the different account id, should list only two"
+
+              (http/post (endpoint "/purchase/")
+                         (content-like-json income-st))
+
+              (http/post (endpoint "/purchase/")
+                         (content-like-json expense-st))
+
+              (http/post (endpoint "/purchase/")
+                         (content-like-json (merge expense-nd {:account-id (UUID/randomUUID)})))
+
+              (map rm-id-date (json/parse-string (response (str "/purchase/from-account/" account-id "/")) true))
+              => (list income-st expense-st))
+
+        (fact "purchase list count check when registering only one purchase with a account id and list purchases from other account id, should list none"
+
+              (http/post (endpoint "/purchase/")
+                         (content-like-json income-st))
+
+              (map rm-id-date (json/parse-string (response (str "/purchase/from-account/" (UUID/randomUUID) "/")) true))
+              => '())))
 
 (facts "Hitting purchase register route, with invalid income data, checking response status" :assertion
 

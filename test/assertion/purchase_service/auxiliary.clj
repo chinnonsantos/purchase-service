@@ -37,7 +37,7 @@
 (def purchase-id (UUID/randomUUID))
 
 (def income-st
-  {:account-id account-id ; required
+  {:account-id (str account-id) ; required
    :type "income" ; required ("income" or "expense")
    :value 520.50 ; required (posive number)
    :origin {:code 0
@@ -51,7 +51,7 @@
                         {:escape-non-ascii true}))
 
 (def expense-st
-  {:account-id account-id
+  {:account-id (str account-id)
    :type "expense"
    :value 124.90
    :origin {:code 2
@@ -63,7 +63,7 @@
                         {:escape-non-ascii true}))
 
 (def expense-nd
-  {:account-id account-id
+  {:account-id (str account-id)
    :type "expense"
    :value 459.99
    :origin {:code 1
@@ -71,9 +71,17 @@
    :tag ["furniture"
          "kitchen"]})
 
+(def purchase-list
+  [income-st expense-st expense-nd])
+
+(defn rm-id-date
+  "Remove the purchase-id and date key from set"
+  [set]
+  (dissoc set :purchase-id :date))
+
 (defn rm-id-date-from-json
   "Remove the purchase-id and date key from JSON string"
   [json]
   (-> (json/parse-string json true)
-      (dissoc :purchase-id :date)
+      (rm-id-date)
       (json/generate-string {:escape-non-ascii true})))

@@ -3,10 +3,14 @@
 (def records
   (atom []))
 
-(defn transactions! []
+(defn transactions!
+  "List all transactions"
+  []
   @records)
 
-(defn reset-records! []
+(defn reset-records!
+  "Remove all transactions"
+  []
   (reset! records []))
 
 (defn register!
@@ -20,6 +24,9 @@
                              :date date})
          (swap! records conj)
          (last))))
+
+(defn transactions-from-account! [account-id & [filters]]
+  (filter #(= account-id (:account-id %)) (transactions!)))
 
 (defn- expense? [transaction]
   (= (:type transaction) "expense"))
