@@ -21,18 +21,18 @@
   (GET "/" []
     (header-json {:message "Alive!"}))
   ;; Balance from account
-  (GET "/balance/:account-id/" []
-    (header-json {:balance (db/balance!)}))
+  (GET "/balance/:account-id/" request
+    (let [account-id (:account-id (:route-params request))]
+      (header-json {:balance (db/balance! account-id)})))
+  ;; Purchase info (purchase details)
+  (GET "/purchase/:purchase-id/" []
+    (header-json {})) ; (:route-params request)
   ;; Purchase list from account
   (GET "/purchase/from-account/:account-id/" request
     (let [account-id (:account-id (:route-params request))
           filters (dissoc (:params request) :account-id)]
       (-> (db/transactions-from-account! account-id filters)
-          (header-json)))
-    )
-  ;; Purchase info (purchase details)
-  (GET "/purchase/:purchase-id/" []
-    (header-json {})) ; (:route-params request)
+          (header-json))))
   ;; Purchase transaction
   (POST "/purchase/" request
     (if (trans/valid? (:body request))

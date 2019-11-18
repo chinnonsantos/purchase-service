@@ -8,7 +8,7 @@
 
 (facts "Income data integrity check" :unit
 
-       (fact "a transaction without account id is not valid"
+       (fact "a transaction without account ID is not valid"
              (valid? (dissoc income-st :account-id)) => false)
 
        (fact "a transaction without type is not valid"
@@ -29,12 +29,12 @@
        (fact "a transaction without origin map is not valid"
              (valid? (dissoc income-st :origin)) => false)
 
-       (fact "a transaction with a account id, a origin map and a positive number and a known type is valid"
+       (fact "a transaction with a account ID, a origin map and a positive number and a known type is valid"
              (valid? income-st) => true))
 
 (facts "Expense data integrity check" :unit
 
-       (fact "a transaction without account id is not valid"
+       (fact "a transaction without account ID is not valid"
              (valid? (dissoc expense-st :account-id)) => false)
 
        (fact "a transaction without type is not valid"
@@ -55,5 +55,5 @@
        (fact "a transaction without origin map is not valid"
              (valid? (dissoc expense-st :origin)) => false)
 
-       (fact "a transaction with a account id, a origin map and a positive number and a known type is valid"
+       (fact "a transaction with a account ID, a origin map and a positive number and a known type is valid"
              (valid? expense-st) => true))

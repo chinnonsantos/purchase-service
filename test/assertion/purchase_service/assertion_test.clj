@@ -54,23 +54,23 @@
                                         (content-like-json expense-st))]
                 (rm-id-date-from-json (:body response)) => expense-st-json))
 
-        (fact "balance is 520.50 when there is a only income transaction with value of 520.50"
+        (fact "balance is 520.5 when there is a only income transaction with value of 520.5"
 
               (http/post (endpoint "/purchase/")
                          (content-like-json income-st))
 
               (json/parse-string (response (str "/balance/" account-id "/")) true)
-              => {:balance 520.50})
+              => {:balance 520.5})
 
-        (fact "balance is -124.90 when there is a only expense transaction with value of 124.90"
+        (fact "balance is -124.9 when there is a only expense transaction with value of 124.9"
 
               (http/post (endpoint "/purchase/")
                          (content-like-json expense-st))
 
               (json/parse-string (response (str "/balance/" account-id "/")) true)
-              => {:balance -124.90})
+              => {:balance -124.9})
 
-        (fact "balance is -64.39 when we creating an income transaction with value of 520.50 and an expense transaction with value of 124.90 and other expense transaction with value of 459.99"
+        (fact "balance is -64.39 when we creating an income transaction with value of 520.5 and an expense transaction with value of 124.9 and other expense transaction with value of 459.99"
 
               (http/post (endpoint "/purchase/")
                          (content-like-json income-st))
@@ -117,7 +117,7 @@
               (map rm-id-date (json/parse-string (response (str "/purchase/from-account/" account-id "/")) true))
               => (list income-st expense-st expense-nd))
 
-        (fact "purchase list count check when registering two purchase from the same account id and one from the different account id, should list only two"
+        (fact "purchase list count check when registering two purchase from the same account ID and one from the different account ID, should list only two"
 
               (http/post (endpoint "/purchase/")
                          (content-like-json income-st))
@@ -131,7 +131,7 @@
               (map rm-id-date (json/parse-string (response (str "/purchase/from-account/" account-id "/")) true))
               => (list income-st expense-st))
 
-        (fact "purchase list count check when registering only one purchase with a account id and list purchases from other account id, should list none"
+        (fact "purchase list count check when registering only one purchase with a account ID and list purchases from other account ID, should list none"
 
               (http/post (endpoint "/purchase/")
                          (content-like-json income-st))

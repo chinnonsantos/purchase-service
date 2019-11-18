@@ -34,12 +34,14 @@
 
 (def account-id (UUID/randomUUID))
 
+(def other-account-id (UUID/randomUUID))
+
 (def purchase-id (UUID/randomUUID))
 
 (def income-st
   {:account-id (str account-id) ; required
    :type "income" ; required ("income" or "expense")
-   :value 520.50 ; required (posive number)
+   :value 520.5 ; required (posive number)
    :origin {:code 0
             :name "bill payment"} ; required
    :tag ["bill"
@@ -53,7 +55,7 @@
 (def expense-st
   {:account-id (str account-id)
    :type "expense"
-   :value 124.90
+   :value 124.9
    :origin {:code 2
             :name "shopping online"}
    :tag ["footwear"]})

@@ -4,6 +4,7 @@
                                  =>
                                  against-background]]
             [purchase-service.db.saving-purchase :as db]
+            [purchase-service.auxiliary :refer [account-id]]
             [purchase-service.components.transactions :as trans]
             [ring.mock.request :as mock]
             [purchase-service.service :refer [app]]
@@ -26,13 +27,13 @@
          (fact "body response is a JSON, message should be 'Alive!'"
                (:body response) => "{\"message\":\"Alive!\"}")))
 
-(facts "Hitting balance route, by account id, checking response" :unit
+(facts "Hitting balance route, by account ID, checking response" :unit
 
        (against-background [(json/generate-string {:balance 0})
                             => "{\"balance\":0}"
-                            (db/balance!) => 0])
+                            (db/balance! (str account-id)) => 0])
 
-       (let [response (app (mock/request :get "/balance/:account-id/"))]
+       (let [response (app (mock/request :get (str "/balance/" account-id "/")))]
 
          (fact "the header content-type is 'application/json'"
                (get-in response [:headers "Content-Type"])
@@ -44,7 +45,7 @@
          (fact "body response is a JSON, initial value of balance should be 0"
                (:body response) => "{\"balance\":0}")))
 
-(facts "Hitting purchases list route, by account id, checking response" :unit
+(facts "Hitting purchases list route, by account ID, checking response" :unit
 
        (against-background (json/generate-string '()) => "[]")
 

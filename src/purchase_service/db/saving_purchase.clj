@@ -37,5 +37,6 @@
       (- balance value)
       (+ balance value))))
 
-(defn balance! []
-  (reduce calculate! 0 @records))
+(defn balance! [account-id]
+  (let [transactions (transactions-from-account! account-id)]
+    (reduce calculate! 0 transactions)))
