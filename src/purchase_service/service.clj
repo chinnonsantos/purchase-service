@@ -17,28 +17,35 @@
    :body (json/generate-string data-map)})
 
 (defroutes app-routes
+
   ;; Main
   (GET "/" []
     (header-json {:message "Alive!"}))
+
   ;; Balance from account
   (GET "/balance/:account-id/" request
     (let [account-id (:account-id (:route-params request))]
       (header-json {:balance (db/balance! account-id)})))
+
   ;; Purchase info (purchase details)
-  (GET "/purchase/:purchase-id/" []
-    (header-json {})) ; (:route-params request)
+  (GET "/purchase/:purchase-id/" request
+    (let [purchase-id (:purchase-id (:route-params request))]
+      (header-json (db/transaction-by-id! purchase-id))))
+
   ;; Purchase list from account
   (GET "/purchase/from-account/:account-id/" request
     (let [account-id (:account-id (:route-params request))
           filters (dissoc (:params request) :account-id)]
       (-> (db/transactions-from-account! account-id filters)
           (header-json))))
+
   ;; Purchase transaction
   (POST "/purchase/" request
     (if (trans/valid? (:body request))
       (-> (db/register! (:body request))
           (header-json 201))
       (header-json {:mensagem "Unprocessable Entity"} 422)))
+
   ;; Any route that does not exist
   (route/not-found (header-json {:message "Not Found"})))
 

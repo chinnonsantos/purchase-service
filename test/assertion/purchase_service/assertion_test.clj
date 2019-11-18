@@ -42,6 +42,16 @@
               (json/parse-string (response (str "/purchase/" purchase-id "/")) true)
               => {})
 
+        (fact "check response body when get transaction by ID (transaction info)"
+              (let [response-post (http/post (endpoint "/purchase/")
+                                             (content-like-json income-st))
+                    income-registed (json/parse-string (:body response-post) true)
+                    purchase-id-registed (:purchase-id income-registed)]
+
+                (-> (str "/purchase/" purchase-id-registed "/")
+                    (response)
+                    (json/parse-string true)) => income-registed))
+
         (fact "check response body after register a income transaction"
 
               (let [response (http/post (endpoint "/purchase/")
