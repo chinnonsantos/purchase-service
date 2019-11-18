@@ -32,6 +32,9 @@
    :body (json/generate-string transaction)
    :throw-exceptions false})
 
+(defn generate-json [data]
+  (json/generate-string data {:escape-non-ascii true}))
+
 (def account-id (str (UUID/randomUUID)))
 
 (def other-account-id (str (UUID/randomUUID)))
@@ -49,8 +52,7 @@
   )
 
 (def income-st-json
-  (json/generate-string income-st
-                        {:escape-non-ascii true}))
+  (generate-json income-st))
 
 (def expense-st
   {:account-id account-id
@@ -61,8 +63,7 @@
    :tag ["footwear"]})
 
 (def expense-st-json
-  (json/generate-string expense-st
-                        {:escape-non-ascii true}))
+  (generate-json expense-st))
 
 (def expense-nd
   {:account-id account-id

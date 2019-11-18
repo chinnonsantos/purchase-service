@@ -26,10 +26,11 @@
               (count (transactions!)) => 0)
 
         (fact "this transaction is the first record, and count of transactions is 1"
-              (let [date (java.util.Date. 1573139257804)]
-                (register! income-st purchase-id date)
-                => (merge income-st {:purchase-id purchase-id
-                                     :date date}))
+              (let [date (java.util.Date. 1573139257804)
+                    purchase-expected (merge income-st {:purchase-id purchase-id
+                                                        :date date})]
+
+                (register! income-st purchase-id date) => purchase-expected)
 
               (count (transactions!)) => 1)))
 
@@ -117,23 +118,23 @@
         [(before :facts (reset-records!))]
 
         (fact "get only the transaction fetched by ID between the three transaction records"
-              (let [date (java.util.Date. 1573139257804)]
+              (let [date (java.util.Date. 1573139257804)
+                    purchase-expected (merge income-st {:purchase-id purchase-id
+                                                        :date date})]
                 (register! income-st purchase-id date)
                 (register! expense-st)
                 (register! expense-nd)
 
-                (transaction-by-id! purchase-id)
-                => (merge income-st {:purchase-id purchase-id
-                                     :date date})))
+                (transaction-by-id! purchase-id) => purchase-expected))
 
         (fact "get last transaction fetched by ID between both transaction records with the same ID"
-              (let [date (java.util.Date. 1573139257804)]
+              (let [date (java.util.Date. 1573139257804)
+                    purchase-expected (merge expense-st {:purchase-id purchase-id
+                                                        :date date})]
                 (register! income-st purchase-id date)
                 (register! expense-st purchase-id date)
 
-                (transaction-by-id! purchase-id)
-                => (merge expense-st {:purchase-id purchase-id
-                                      :date date})))
+                (transaction-by-id! purchase-id) => purchase-expected))
 
         (fact "get no transaction fetched by ID between two transaction records with different IDs"
               (register! income-st)

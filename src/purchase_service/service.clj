@@ -3,51 +3,23 @@
                                     GET
                                     POST]]
             [compojure.route :as route]
-            [purchase-service.db.saving-purchase :as db]
-            [purchase-service.components.transactions :as trans]
+            [purchase-service.components.service :refer [home-page
+                                                         account->balance
+                                                         get-purchase
+                                                         account->purchases
+                                                         create-purchase
+                                                         not-found]]
             [ring.middleware.defaults :refer [wrap-defaults
                                               api-defaults]]
-            [ring.middleware.json :refer [wrap-json-body]]
-            [cheshire.core :as json]))
-
-(defn header-json [data-map & [status]]
-  {:status (or status 200)
-   :headers {"Content-Type"
-             "application/json; charset=utf-8"}
-   :body (json/generate-string data-map)})
+            [ring.middleware.json :refer [wrap-json-body]]))
 
 (defroutes app-routes
-
-  ;; Main
-  (GET "/" []
-    (header-json {:message "Alive!"}))
-
-  ;; Balance from account
-  (GET "/balance/:account-id/" request
-    (let [account-id (:account-id (:route-params request))]
-      (header-json {:balance (db/balance! account-id)})))
-
-  ;; Purchase info (purchase details)
-  (GET "/purchase/:purchase-id/" request
-    (let [purchase-id (:purchase-id (:route-params request))]
-      (header-json (db/transaction-by-id! purchase-id))))
-
-  ;; Purchase list from account
-  (GET "/purchase/from-account/:account-id/" request
-    (let [account-id (:account-id (:route-params request))
-          filters (dissoc (:params request) :account-id)]
-      (-> (db/transactions-from-account! account-id filters)
-          (header-json))))
-
-  ;; Purchase transaction
-  (POST "/purchase/" request
-    (if (trans/valid? (:body request))
-      (-> (db/register! (:body request))
-          (header-json 201))
-      (header-json {:mensagem "Unprocessable Entity"} 422)))
-
-  ;; Any route that does not exist
-  (route/not-found (header-json {:message "Not Found"})))
+  (GET "/" [] (home-page))
+  (GET "/balance/:account-id/" request (account->balance request))
+  (GET "/purchase/:purchase-id/" request (get-purchase request))
+  (GET "/purchase/from-account/:account-id/" request (account->purchases request))
+  (POST "/purchase/" request (create-purchase request))
+  (route/not-found (not-found)))
 
 (def app
   (-> (wrap-defaults app-routes api-defaults)
