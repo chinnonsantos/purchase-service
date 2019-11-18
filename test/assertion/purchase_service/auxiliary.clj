@@ -32,14 +32,14 @@
    :body (json/generate-string transaction)
    :throw-exceptions false})
 
-(def account-id (UUID/randomUUID))
+(def account-id (str (UUID/randomUUID)))
 
-(def other-account-id (UUID/randomUUID))
+(def other-account-id (str (UUID/randomUUID)))
 
-(def purchase-id (UUID/randomUUID))
+(def purchase-id (str (UUID/randomUUID)))
 
 (def income-st
-  {:account-id (str account-id) ; required
+  {:account-id account-id ; required
    :type "income" ; required ("income" or "expense")
    :value 520.5 ; required (posive number)
    :origin {:code 0
@@ -53,7 +53,7 @@
                         {:escape-non-ascii true}))
 
 (def expense-st
-  {:account-id (str account-id)
+  {:account-id account-id
    :type "expense"
    :value 124.9
    :origin {:code 2
@@ -65,7 +65,7 @@
                         {:escape-non-ascii true}))
 
 (def expense-nd
-  {:account-id (str account-id)
+  {:account-id account-id
    :type "expense"
    :value 459.99
    :origin {:code 1

@@ -31,7 +31,7 @@
 
        (against-background [(json/generate-string {:balance 0})
                             => "{\"balance\":0}"
-                            (db/balance! (str account-id)) => 0])
+                            (db/balance! account-id) => 0])
 
        (let [response (app (mock/request :get (str "/balance/" account-id "/")))]
 
