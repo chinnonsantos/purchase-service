@@ -29,7 +29,7 @@
        (fact "a transaction without origin map is not valid"
              (valid? (dissoc income-st :origin)) => false)
 
-       (fact "a transaction with a account ID, a origin map and a positive number and a known type is valid"
+       (fact "a transaction with an account ID, an origin map and a positive number and a known type is valid"
              (valid? income-st) => true))
 
 (facts "Expense data integrity check" :unit
@@ -55,5 +55,5 @@
        (fact "a transaction without origin map is not valid"
              (valid? (dissoc expense-st :origin)) => false)
 
-       (fact "a transaction with a account ID, a origin map and a positive number and a known type is valid"
+       (fact "a transaction with an account ID, an origin map and a positive number and a known type is valid"
              (valid? expense-st) => true))

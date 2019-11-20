@@ -25,7 +25,7 @@
   []
   (header-json {:message "Alive!"}))
 
-(defn account->balance
+(defn account->balance!
   "Account balance route"
   [request]
   (-> {:balance (db/balance! (get-account-id request))}
@@ -38,14 +38,14 @@
       (db/transaction-by-id!)
       (header-json)))
 
-(defn account->purchases
+(defn account->purchases!
   "Account purchases list route"
   [request]
   (-> (get-account-id request)
       (db/transactions-from-account! (get-filters request))
       (header-json)))
 
-(defn create-purchase
+(defn create-purchase!
   "Purchase transaction route, create a new purchase"
   [request]
   (let [body (:body request)]

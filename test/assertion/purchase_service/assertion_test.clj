@@ -31,16 +31,19 @@
          (after :facts (stop-server!))] ;; `teardown`
 
         (fact "initial balance is 0"
-              (json/parse-string (response (str "/balance/" account-id "/")) true)
-              => {:balance 0})
+              (-> (str "/balance/" account-id "/")
+                  (response)
+                  (json/parse-string true)) => {:balance 0})
 
-        (fact "initial purchases list is a empty list"
-              (json/parse-string (response (str "/purchase/from-account/" account-id "/")) true)
-              => '())
+        (fact "initial purchases list by account ID is an empty list"
+              (-> (str "/purchase/from-account/" account-id "/")
+                  (response)
+                  (json/parse-string true)) => '())
 
-        (fact "initial purchase info is a empty object"
-              (json/parse-string (response (str "/purchase/" purchase-id "/")) true)
-              => {})
+        (fact "initial purchase info is an empty object"
+              (-> (str "/purchase/" purchase-id "/")
+                  (response)
+                  (json/parse-string  true)) => {})
 
         (fact "check response body when get transaction by ID (transaction info)"
               (let [response-post (http/post (endpoint "/purchase/")
@@ -52,7 +55,7 @@
                     (response)
                     (json/parse-string true)) => income-registed))
 
-        (fact "check response body after register a income transaction"
+        (fact "check response body after register an income transaction"
 
               (let [response (http/post (endpoint "/purchase/")
                                         (content-like-json income-st))]
@@ -60,7 +63,7 @@
                 (-> (:body response)
                     (rm-id-date-from-json)) => income-st-json))
 
-        (fact "check response body after register a expense transaction"
+        (fact "check response body after register an expense transaction"
 
               (let [response (http/post (endpoint "/purchase/")
                                         (content-like-json expense-st))]
@@ -68,7 +71,7 @@
                 (-> (:body response)
                     (rm-id-date-from-json)) => expense-st-json))
 
-        (fact "balance is 520.5 when there is a only income transaction with value of 520.5"
+        (fact "balance is 520.5 when there is an only income transaction with value of 520.5"
 
               (http/post (endpoint "/purchase/")
                          (content-like-json income-st))
@@ -77,7 +80,7 @@
                   (response)
                   (json/parse-string true)) => {:balance 520.5})
 
-        (fact "balance is -124.9 when there is a only expense transaction with value of 124.9"
+        (fact "balance is -124.9 when there is an only expense transaction with value of 124.9"
 
               (http/post (endpoint "/purchase/")
                          (content-like-json expense-st))
@@ -124,7 +127,8 @@
                                       (response)
                                       (json/parse-string true))]
 
-                (map rm-id-date purchase-list) => (list income-st expense-st)))
+                (map rm-id-date purchase-list) => (list income-st
+                                                        expense-st)))
 
         (fact "purchase list count check when registering three purchase, should list only three"
 
@@ -141,7 +145,9 @@
                                       (response)
                                       (json/parse-string true))]
 
-                (map rm-id-date purchase-list) => (list income-st expense-st expense-nd)))
+                (map rm-id-date purchase-list) => (list income-st
+                                                        expense-st
+                                                        expense-nd)))
 
         (fact "purchase list count check when registering two purchase from the same account ID and one from the different account ID, should list only two"
 
@@ -158,7 +164,8 @@
                                       (response)
                                       (json/parse-string true))]
 
-                (map rm-id-date purchase-list) => (list income-st expense-st)))
+                (map rm-id-date purchase-list) => (list income-st
+                                                        expense-st)))
 
         (fact "purchase list count check when registering only one purchase with a account ID and list purchases from other account ID, should list none"
 
