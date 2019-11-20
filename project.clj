@@ -1,4 +1,4 @@
-(defproject purchase-service "1.0.0" ;; Semantic Versioning 2.0.0
+(defproject purchase-service "1.0.1" ;; Semantic Versioning 2.0.0
   :uberjar-name "purchase-%s.jar"
   :description "Purchase microservices demo"
   :url "https://github.com/chinnonsantos/purchase-service"

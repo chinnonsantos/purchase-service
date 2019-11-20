@@ -119,7 +119,7 @@ To create standalone artifact (.jar)
 
 To run standalone artifact (need Java JRE)
 
-    java -jar target/purchase-1.0.0.jar
+    java -jar target/purchase-1.0.1.jar
 
 > See all releases of this project [here][]!
 

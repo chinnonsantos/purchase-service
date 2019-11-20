@@ -112,7 +112,7 @@
 
               (count (transactions-from-account! other-account-id)) => 0)))
 
-(facts "Get transaction by ID" :unit
+(facts "Get a transaction by ID" :unit
 
        (against-background
         [(before :facts (reset-records!))]
