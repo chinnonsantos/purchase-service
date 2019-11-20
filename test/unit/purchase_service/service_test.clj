@@ -5,7 +5,7 @@
                                  against-background]]
             [purchase-service.db.saving-purchase :as db]
             [purchase-service.auxiliary :refer [account-id]]
-            [purchase-service.components.transactions :as trans]
+            [purchase-service.components.transactions :refer [valid?]]
             [ring.mock.request :as mock]
             [purchase-service.service :refer [app]]
             [cheshire.core :as json]))
@@ -79,7 +79,7 @@
 
 (facts "Hitting purchase register route, checking response" :unit
 
-       (against-background [(trans/valid? {:value 100}) => true ;; Mock of `trans/valid?`
+       (against-background [(valid? {:value 100}) => true ;; Mock of `valid?`
                             (db/register! {:value 100}) => {:value 100} ;; Mock of `db/register!`
                             ])
 
@@ -96,6 +96,23 @@
 
          (fact "body response is a JSON, with the same content that was submitted"
                (:body response) => "{\"value\":100}")))
+
+(facts "Hitting purchase register route, with INVALID client test data, checking response" :unit
+
+       (against-background [(valid? {:anotherkey "Any!"}) => false])
+
+       (let [response (app (-> (mock/request :post "/purchase/")
+                               (mock/json-body {:anotherkey "Any!"})))]
+
+         (fact "the header content-type is 'application/json'"
+               (get-in response [:headers "Content-Type"])
+               => "application/json; charset=utf-8")
+
+         (fact "status response is 422"
+               (:status response) => 422)
+
+         (fact "body response is a JSON, with the same content that was submitted"
+               (:body response) => "{\"mensagem\":\"Unprocessable Entity\"}")))
 
 (facts "Hitting invalid route, checking routes not found" :unit
 
