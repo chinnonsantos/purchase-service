@@ -1,8 +1,14 @@
 language: clojure
 lein: 2.9.1
 script: "lein midje"
+
 branches:
   only:
     - master
+
 jdk:
   - openjdk11
+
+after_success:
+- CLOVERAGE_VERSION=1.1.2 lein cloverage --codecov
+- bash <(curl -s https://codecov.io/bash) -f target/coverage/codecov.json
