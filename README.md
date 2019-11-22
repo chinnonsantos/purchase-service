@@ -2,7 +2,7 @@
 
 ## Build status
 
-[![Build Status](https://travis-ci.org/chinnonsantos/purchase-service.svg?branch=master)](https://travis-ci.org/chinnonsantos/purchase-service) [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![Build Status](https://travis-ci.org/chinnonsantos/purchase-service.svg?branch=master)](https://travis-ci.org/chinnonsantos/purchase-service) [![codecov](https://codecov.io/gh/chinnonsantos/purchase-service/branch/master/graph/badge.svg)](https://codecov.io/gh/chinnonsantos/purchase-service) [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 This project deals with a purchase microservice created from the leiningen '[compojure][]' template.
 
