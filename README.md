@@ -4,6 +4,8 @@
 
 This project deals with a purchase microservice created from the leiningen '[compojure][]' template.
 
+Using by [Nudemo mobile app][].
+
 ## Prerequisites
 
 You will need [Leiningen][] 2.9.1 or above installed.
@@ -32,6 +34,7 @@ You will need [Leiningen][] 2.9.1 or above installed.
 [ring-json]: https://clojars.org/ring/ring-json
 [lein-midje]: https://clojars.org/lein-midje
 [lein-cloverage]: https://clojars.org/lein-cloverage
+[Nudemo mobile app]: https://github.com/chinnonsantos/nudemo/releases
 
 ## Running server
 
