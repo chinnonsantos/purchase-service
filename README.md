@@ -4,7 +4,7 @@
 
 This project deals with a purchase microservice created from the leiningen '[compojure][]' template.
 
-Using by [Nudemo mobile app][].
+Usinged by [Nudemo mobile app][].
 
 ## Prerequisites
 
@@ -125,6 +125,61 @@ To run standalone artifact (need Java JRE)
 > See all releases of this project [here][]!
 
 [here]: https://github.com/chinnonsantos/purchase-service/releases
+
+## Containerization w/ Docker
+
+This project is available in a containerized form on the **[Docker hub][]** repository.
+
+To go up the service manually with **[Docker][] commands**
+
+    # Ubuntu eoan -> 19.10
+    sudo docker pull ubuntu:eoan
+    sudo docker network create nudemo-services
+    sudo docker run -it --rm --name purchase --net nudemo-services -p 9001:9001 ubuntu:eoan
+
+    ## Inside the container... (sudo docker attach purchase-service)
+    # Updating Ubuntu APT packages
+    apt update
+    # Installing Wget package
+    apt install wget -y
+    # Installing OpenJDK 11
+    apt install openjdk-11-jre-headless -y && java --version
+    # Installing Leiningen
+    cd /usr/local/bin && wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && ls
+    chmod +x lein && ls && ./lein && lein -v
+    # Creating app directory
+    mkdir /home/purchase-service
+
+    ## Outside the container... (Ctrl+P and Ctrl+Q)
+    # Copying project files to container ('~/Projects/' change to 'YOUR_PROJECT_FOLDER')
+    sudo docker cp ~/Projects/purchase-service/src purchase-service:/home/purchase-service/src
+    sudo docker cp ~/Projects/purchase-service/project.clj purchase-service:/home/purchase-service
+
+    ## Inside the container... (sudo docker attach purchase-service)
+    # Downloading Leiningen project dependencies
+    cd /home/purchase-service
+    lein deps
+    # Create standalone artifact (.jar)
+    lein ring uberjar
+    # Uninstalling packages and cleaning the system for reduce container size
+    apt remove wget -y && apt autoremove -y && apt autoclean -y && apt clean -y
+    cp target/purchase-1.0.1.jar .
+    rm -rf /var/lib/apt/lists/ /tmp/ /var/tmp/ /root/.lein/ /root/.m2/ /root/.wget-hsts /usr/local/bin/lein /home/purchase-service/project.clj /home/purchase-service/src/ /home/purchase-service/target/ /home/purchase-service/test/
+    # Starting service (run standalone artifact)
+    java -jar purchase-1.0.1.jar
+
+To go up the service automatically with **[Dockerfile][]**
+
+    sudo docker build -t chinnonsantos/purchase-service:1.0.1 --no-cache .
+    sudo docker network create nudemo-services
+    sudo docker run -d --rm --name purchase --net nudemo-services -p 9001:9001 chinnonsantos/purchase-service:1.0.1
+
+> See all images of this project [here][1]!
+
+[Docker hub]: https://hub.docker.com/
+[Docker]: https://docs.docker.com/
+[Dockerfile]: https://docs.docker.com/engine/reference/builder/
+[1]: https://hub.docker.com/r/chinnonsantos/purchase-service/tags
 
 ## License
 
