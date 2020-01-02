@@ -120,7 +120,7 @@ To create standalone artifact (.jar)
 
 To run standalone artifact (need Java JRE)
 
-    java -jar target/purchase-1.0.1.jar
+    java -jar target/purchase-1.0.2.jar
 
 > See all releases of this project [here][]!
 
@@ -133,7 +133,7 @@ This project is available in a containerized form on the **[Docker hub][]** repo
 To running the container with **[Docker][] commands**
 
     sudo docker network create nudemo-services
-    sudo docker run -d --rm --name purchase --net nudemo-services -p 9002:9002 chinnonsantos/purchase-service:1.0.1
+    sudo docker run -d --rm --name purchase --net nudemo-services -p 9002:9002 chinnonsantos/purchase-service:1.0.2
 
 To go up the service manually with **[Docker][] commands**
 
@@ -167,16 +167,16 @@ To go up the service manually with **[Docker][] commands**
     lein ring uberjar
     # Uninstalling packages and cleaning the system for reduce container size
     apt remove wget -y && apt autoremove -y && apt autoclean -y && apt clean -y
-    cp target/purchase-1.0.1.jar .
+    cp target/purchase-1.0.2.jar .
     rm -rf /var/lib/apt/lists/ /tmp/ /var/tmp/ /root/.lein/ /root/.m2/ /root/.wget-hsts /usr/local/bin/lein /home/purchase-service/project.clj /home/purchase-service/src/ /home/purchase-service/target/ /home/purchase-service/test/
     # Starting service (run standalone artifact)
-    java -jar purchase-1.0.1.jar
+    java -jar purchase-1.0.2.jar
 
 To go up the service automatically with **[Dockerfile][]**
 
-    sudo docker build -t chinnonsantos/purchase-service:1.0.1 --no-cache .
+    sudo docker build -t chinnonsantos/purchase-service:1.0.2 --no-cache .
     sudo docker network create nudemo-services
-    sudo docker run -d --rm --name purchase --net nudemo-services -p 9002:9002 chinnonsantos/purchase-service:1.0.1
+    sudo docker run -d --rm --name purchase --net nudemo-services -p 9002:9002 chinnonsantos/purchase-service:1.0.2
 
 > See all images of this project [here][1]!
 
@@ -187,4 +187,4 @@ To go up the service automatically with **[Dockerfile][]**
 
 ## License
 
-Copyright © 2019 | Chinnon Santos | Apache License 2.0
+Copyright © 2019 ~ 2020 | Chinnon Santos | Apache License 2.0

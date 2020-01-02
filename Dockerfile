@@ -19,7 +19,7 @@
 FROM ubuntu:eoan
 
 # Creating labels
-LABEL version="1.0.1" description="Purchase microservices demo" "br.com.chinnonsantos.vendor"="Chinnon Santos - Software Engineer" "br.com.chinnonsantos.email"="contato@chinnonsantos.com.br" "br.com.chinnonsantos.repository"="https://github.com/chinnonsantos/purchase-service"
+LABEL version="1.0.2" description="Purchase microservices demo" "br.com.chinnonsantos.vendor"="Chinnon Santos - Software Engineer" "br.com.chinnonsantos.email"="contato@chinnonsantos.com.br" "br.com.chinnonsantos.repository"="https://github.com/chinnonsantos/purchase-service"
 
 # Updating Ubuntu APT packages
 RUN ["sh", "-c", "apt-get update && apt-get upgrade -y"]
@@ -50,12 +50,12 @@ RUN ["sh", "-c", "lein ring uberjar"]
 
 # Uninstalling packages and cleaning the system for reduce container size
 RUN ["sh", "-c", "apt-get remove wget -y && apt-get autoremove -y && apt-get autoclean -y && apt-get clean -y"]
-RUN ["sh", "-c", "cp target/purchase-1.0.1.jar ."]
+RUN ["sh", "-c", "cp target/purchase-1.0.2.jar ."]
 RUN ["sh", "-c", "rm -rf /var/lib/apt/lists/ /tmp/ /var/tmp/ /root/.lein/ /root/.m2/ /root/.wget-hsts /usr/local/bin/lein /home/purchase-service/project.clj /home/purchase-service/src/ /home/purchase-service/target/ /home/purchase-service/test/"]
 
 # Specifying network ports
 EXPOSE 9002/tcp
 
 # Starting service (run standalone artifact)
-CMD ["purchase-1.0.1.jar"]
+CMD ["purchase-1.0.2.jar"]
 ENTRYPOINT ["java", "-jar"]
