@@ -130,12 +130,16 @@ To run standalone artifact (need Java JRE)
 
 This project is available in a containerized form on the **[Docker hub][]** repository.
 
+To running the container with **[Docker][] commands**
+
+    sudo docker network create nudemo-services
+    sudo docker run -d --rm --name purchase --net nudemo-services -p 9002:9002 chinnonsantos/purchase-service:1.0.1
+
 To go up the service manually with **[Docker][] commands**
 
     # Ubuntu eoan -> 19.10
-    sudo docker pull ubuntu:eoan
     sudo docker network create nudemo-services
-    sudo docker run -it --rm --name purchase --net nudemo-services -p 9001:9001 ubuntu:eoan
+    sudo docker run -it --rm --name purchase --net nudemo-services -p 9002:9002 ubuntu:eoan
 
     ## Inside the container... (sudo docker attach purchase-service)
     # Updating Ubuntu APT packages
@@ -172,7 +176,7 @@ To go up the service automatically with **[Dockerfile][]**
 
     sudo docker build -t chinnonsantos/purchase-service:1.0.1 --no-cache .
     sudo docker network create nudemo-services
-    sudo docker run -d --rm --name purchase --net nudemo-services -p 9001:9001 chinnonsantos/purchase-service:1.0.1
+    sudo docker run -d --rm --name purchase --net nudemo-services -p 9002:9002 chinnonsantos/purchase-service:1.0.1
 
 > See all images of this project [here][1]!
 

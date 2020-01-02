@@ -54,7 +54,7 @@ RUN ["sh", "-c", "cp target/purchase-1.0.1.jar ."]
 RUN ["sh", "-c", "rm -rf /var/lib/apt/lists/ /tmp/ /var/tmp/ /root/.lein/ /root/.m2/ /root/.wget-hsts /usr/local/bin/lein /home/purchase-service/project.clj /home/purchase-service/src/ /home/purchase-service/target/ /home/purchase-service/test/"]
 
 # Specifying network ports
-EXPOSE 9001/tcp
+EXPOSE 9002/tcp
 
 # Starting service (run standalone artifact)
 CMD ["purchase-1.0.1.jar"]
