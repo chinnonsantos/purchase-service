@@ -185,6 +185,18 @@ To go up the service automatically with **[Dockerfile][]**
 [Dockerfile]: https://docs.docker.com/engine/reference/builder/
 [1]: https://hub.docker.com/r/chinnonsantos/purchase-service/tags
 
+## Containerization w/ Docker-compose or Amazon ECS (AWS Fargate)
+
+To set up a local cluster with [Docker-compose][] or a cluster on [Amazon Elastic Container Service (ECS)][] with [AWS Fargate][] for [customer-service][], [account-service][] and [purchase-service][] container images, see the **[NUDEMO SERVICES][]** repository.
+
+[Docker-compose]: https://docs.docker.com/compose/
+[Amazon Elastic Container Service (ECS)]: https://aws.amazon.com/pt/ecs/
+[AWS Fargate]: https://aws.amazon.com/pt/fargate/
+[customer-service]: https://hub.docker.com/r/chinnonsantos/customer-service
+[account-service]: https://hub.docker.com/r/chinnonsantos/account-service
+[purchase-service]: https://hub.docker.com/r/chinnonsantos/purchase-service
+[NUDEMO SERVICES]: https://github.com/chinnonsantos/nudemo-services
+
 ## License
 
 Copyright © 2019 ~ 2020 | Chinnon Santos | Apache License 2.0
