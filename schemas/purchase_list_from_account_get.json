@@ -4,7 +4,7 @@
     "account-id": "8b84c28c-8947-4e67-87d8-68f65ebca105",
     "type": "expense",
     "value": 124.9,
-    "date": "2019-11-03T21:36:27Z",
+    "date": "2019-11-03T21:36:27.000Z",
     "origin": {
       "code": 2,
       "name": "shopping online"
@@ -18,7 +18,7 @@
     "account-id": "8b84c28c-8947-4e67-87d8-68f65ebca105",
     "type": "expense",
     "value": 459.99,
-    "date": "2019-11-05T14:45:01Z",
+    "date": "2019-11-05T14:45:01.000Z",
     "origin": {
       "code": 1,
       "name": "shopping"
@@ -33,7 +33,7 @@
     "account-id": "8b84c28c-8947-4e67-87d8-68f65ebca105",
     "type": "income",
     "value": 300.0,
-    "date": "2019-11-11T23:15:22Z",
+    "date": "2019-11-11T23:15:22.000Z",
     "origin": {
       "code": 0,
       "name": "bill payment"
