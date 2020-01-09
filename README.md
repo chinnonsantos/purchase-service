@@ -197,6 +197,34 @@ To set up a local cluster with [Docker-compose][] or a cluster on [Amazon Elasti
 [purchase-service]: https://hub.docker.com/r/chinnonsantos/purchase-service
 [NUDEMO SERVICES]: https://github.com/chinnonsantos/nudemo-services
 
+## Origin class codes
+
+Code definition by transaction type (named in brazilian portuguese)
+
+- INCOMES
+  Code | Name
+  -----| -------------
+  0 | Novo dispositivo autorizado
+  1 | Pagamento recebido
+
+- EXPENSES
+  Code | Name
+  -----| -------------
+  0 | Serviços
+  1 | Transporte
+  2 | Supermercado
+  3 | Restaurante
+  4 | Eletrônicos
+  5 | Saúde
+  6 | Outros
+
+- SYSTEM
+  Code | Name
+  -----| -------------
+  0 | Fatura fechada
+
+> We **don't** cover **system** messages in this demo!
+
 ## License
 
 Copyright © 2019 ~ 2020 | Chinnon Santos | Apache License 2.0
