@@ -202,26 +202,20 @@ To set up a local cluster with [Docker-compose][] or a cluster on [Amazon Elasti
 Code definition by transaction type (named in brazilian portuguese)
 
 - INCOMES
-  Code | Name
-  -----| -------------
-  0 | Novo dispositivo autorizado
-  1 | Pagamento recebido
+  - 0 => _Novo dispositivo autorizado_
+  - 1 => _Pagamento recebido_
 
 - EXPENSES
-  Code | Name
-  -----| -------------
-  0 | Serviços
-  1 | Transporte
-  2 | Supermercado
-  3 | Restaurante
-  4 | Eletrônicos
-  5 | Saúde
-  6 | Outros
+  - 0 => _Serviços_
+  - 1 => _Transporte_
+  - 2 => _Supermercado_
+  - 3 => _Restaurante_
+  - 4 => _Eletrônicos_
+  - 5 => _Saúde_
+  - 6 => _Outros_
 
 - SYSTEM
-  Code | Name
-  -----| -------------
-  0 | Fatura fechada
+  - 0 => _Fatura fechada_
 
 > We **don't** cover **system** messages in this demo!
 
