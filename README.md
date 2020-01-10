@@ -202,20 +202,20 @@ To set up a local cluster with [Docker-compose][] or a cluster on [Amazon Elasti
 Code definition by transaction type (named in brazilian portuguese)
 
 - INCOMES
-  - 0 => _Novo dispositivo autorizado_
-  - 1 => _Pagamento recebido_
+  - 0 => _Pagamento recebido_
 
 - EXPENSES
-  - 0 => _Serviços_
-  - 1 => _Transporte_
-  - 2 => _Supermercado_
-  - 3 => _Restaurante_
-  - 4 => _Eletrônicos_
-  - 5 => _Saúde_
-  - 6 => _Outros_
+  - 0 => [_Serviços_](https://api.flutter.dev/flutter/material/Icons/build-constant.html)
+  - 1 => [_Transporte_](https://api.flutter.dev/flutter/material/Icons/directions_bus-constant.html)
+  - 2 => [_Supermercado_](https://api.flutter.dev/flutter/material/Icons/shopping_cart-constant.html)
+  - 3 => [_Restaurante_](https://api.flutter.dev/flutter/material/Icons/restaurant-constant.html)
+  - 4 => [_Eletrônicos_](https://api.flutter.dev/flutter/material/Icons/usb-constant.html)
+  - 5 => [_Saúde_](https://api.flutter.dev/flutter/material/Icons/healing-constant.html)
+  - 6 => [_Outros_](https://api.flutter.dev/flutter/material/Icons/bookmark_border-constant.html)
 
 - SYSTEM
-  - 0 => _Fatura fechada_
+  - 0 => _Novo dispositivo autorizado_
+  - 1 => _Fatura fechada_
 
 > We **don't** cover **system** messages in this demo!
 
